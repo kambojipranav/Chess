@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Chess Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --secondary-bg: rgba(255, 255, 255, 0.95);
+            --board-light: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            --board-dark: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            --text-color: #2d3436;
+            --accent-color: #fd79a8;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --piece-white: #ffffff;
+            --piece-black: #2d3436;
+            --glow-primary: #fd79a8;
+            --glow-secondary: #00b894;
+        }
+
+        [data-theme="dark"] {
+            --primary-bg: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --secondary-bg: rgba(26, 26, 46, 0.95);
+            --board-light: linear-gradient(135deg, #3d4465, #5a67d8);
+            --board-dark: linear-gradient(135deg, #1a202c, #2d3748);
+            --text-color: #e2e8f0;
+            --accent-color: #ed64a6;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --piece-white: #f7fafc;
+            --piece-black: #1a202c;
+            --glow-primary: #ed64a6;
+            --glow-secondary: #48bb78;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 10s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+            background: var(--secondary-bg);
+            padding: 25px 35px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e, #00b894, #6c5ce7, #fd79a8);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowShift 4s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(253, 121, 168, 0.5);
+            position: relative;
+        }
+
+        .title::before {
+            content: '♔ ELITE CHESS ARENA ♛';
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, transparent, rgba(253, 121, 168, 0.3), transparent);
+            -webkit-background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, rgba(253, 121, 168, 0.2), rgba(108, 92, 231, 0.2));
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 2px solid var(--accent-color);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer-control:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(253, 121, 168, 0.4);
+            border-color: var(--glow-primary);
+        }
+
+        .timer-control label {
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .timer-control select {
+            background: linear-gradient(135deg, var(--secondary-bg), rgba(255, 255, 255, 0.1));
+            color: var(--text-color);
+            border: 2px solid rgba(253, 121, 168, 0.3);
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .timer-control select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(253, 121, 168, 0.3);
+        }
+
+        .theme-toggle {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 200%;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .game-arena {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 40px;
+            align-items: start;
+            width: 100%;
+            max-width: 1400px;
+            justify-items: center;
+        }
+
+        .player-panel {
+            background: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(253, 121, 168, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .player-panel.active {
+            transform: scale(1.05);
+            box-shadow: 0 25px 60px rgba(253, 121, 168, 0.4);
+            border: 3px solid var(--glow-primary);
+        }
+
+        .player-panel.active::before {
+            opacity: 1;
+            animation: panelGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes panelGlow {
+            0%, 100% { transform: rotate(45deg) translateX(-100%); }
+            50% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        .player-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--success-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .player-panel.active .player-avatar {
+            animation: avatarPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes avatarPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 15px 40px rgba(253, 121, 168, 0.5); }
+        }
+
+        .player-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .player-timer {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--accent-color), var(--success-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(253, 121, 168, 0.5);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--success-color), #00cec9);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 184, 148, 0.4);
+        }
+
+        .chess-board-container {
+            perspective: 1000px;
+            transition: all 0.5s ease;
+        }
+
+        .chess-board {
+            display: grid;
+            grid-template-columns: repeat(8, 80px);
+            grid-template-rows: repeat(8, 80px);
+            gap: 3px;
+            background: linear-gradient(135deg, #8b4513, #a0522d, #cd853f);
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .chess-board::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--glow-primary), var(--glow-secondary), var(--glow-primary));
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chess-board:hover::before {
+            opacity: 0.3;
+        }
+
+        .chess-square {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .chess-square:nth-child(odd) {
+            background: var(--board-light);
+        }
+
+        .chess-square:nth-child(even) {
+            background: var(--board-dark);
+        }
+
+        .chess-square::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .chess-square:hover::before {
+            transform: translateX(100%);
+        }
+
+        .chess-square:hover {
+            transform: scale(1.15) rotateZ(5deg);
+            box-shadow: 0 15px 40px rgba(253, 121, 168, 0.6);
+            z-index: 10;
+        }
+
+        .chess-square.selected {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e) !important;
+            transform: scale(1.2) rotateZ(10deg);
+            box-shadow: 0 0 40px rgba(253, 121, 168, 0.8);
+            animation: selectedPulse 1.5s infinite;
+        }
+
+        .chess-square.valid-move {
+            background: linear-gradient(135deg, #00b894, #00cec9) !important;
+            animation: validMoveGlow 2s ease-in-out infinite;
+        }
+
+        .chess-square.valid-move::after {
+            content: '✦';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1rem;
+            color: white;
+            animation: sparkle 1s ease-in-out infinite;
+        }
+
+        @keyframes selectedPulse {
+            0%, 100% { 
+                transform: scale(1.2) rotateZ(10deg);
+                box-shadow: 0 0 40px rgba(253, 121, 168, 0.8);
+            }
+            50% { 
+                transform: scale(1.25) rotateZ(15deg);
+                box-shadow: 0 0 60px rgba(253, 121, 168, 1);
+            }
+        }
+
+        @keyframes validMoveGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(0, 184, 148, 0.6);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(0, 184, 148, 0.9);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .piece {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.4));
+            position: relative;
+            z-index: 2;
+        }
+
+        .piece.white {
+            color: var(--piece-white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .piece.black {
+            color: var(--piece-black);
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.3), 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        [data-theme="dark"] .piece.white {
+            color: #f7fafc;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.9), 0 0 15px rgba(247,250,252,0.7);
+        }
+
+        [data-theme="dark"] .piece.black {
+            color: #2d3748;
+            text-shadow: 2px 2px 6px rgba(255,255,255,0.5), 0 0 15px rgba(45,55,72,0.9);
+        }
+
+        .piece:hover {
+            transform: scale(1.3) rotateY(15deg);
+            filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.6));
+        }
+
+        .game-status {
+            background: var(--secondary-bg);
+            padding: 20px 35px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+        }
+
+        .game-over {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            animation: victoryDance 2s ease-in-out infinite;
+            transform: scale(1.05);
+        }
+
+        @keyframes victoryDance {
+            0%, 100% { transform: scale(1.05) rotateZ(0deg); }
+            25% { transform: scale(1.1) rotateZ(2deg); }
+            75% { transform: scale(1.1) rotateZ(-2deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .game-arena {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .player-panel {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chess-board {
+                grid-template-columns: repeat(8, 60px);
+                grid-template-rows: repeat(8, 60px);
+                padding: 20px;
+            }
+            
+            .chess-square {
+                width: 60px;
+                height: 60px;
+                font-size: 2.8rem;
+            }
+            
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chess-board {
+                grid-template-columns: repeat(8, 45px);
+                grid-template-rows: repeat(8, 45px);
+                padding: 15px;
+            }
+            
+            .chess-square {
+                width: 45px;
+                height: 45px;
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="header">
+        <h1 class="title">♔ ELITE CHESS ARENA ♛</h1>
+        <div class="controls">
+            <div class="timer-control">
+                <label for="timeLimit">⏱️ Time Limit:</label>
+                <select id="timeLimit">
+                    <option value="60">1 Minute</option>
+                    <option value="300" selected>5 Minutes</option>
+                    <option value="600">10 Minutes</option>
+                </select>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
+        </div>
+    </div>
+
+    <div class="game-arena">
+        <div class="player-panel" id="player1Info">
+            <div class="player-avatar">♔</div>
+            <div class="player-name">Player 1</div>
+            <div class="player-timer" id="player1Timer">5:00</div>
+            <button class="start-btn" onclick="startGame()">🚀 Start Epic Battle</button>
+        </div>
+
+        <div class="chess-board-container">
+            <div class="chess-board" id="chessBoard"></div>
+        </div>
+
+        <div class="player-panel" id="player2Info">
+            <div class="player-avatar">♛</div>
+            <div class="player-name">Player 2</div>
+            <div class="player-timer" id="player2Timer">5:00</div>
+        </div>
+    </div>
+
+    <div class="game-status" id="gameStatus">⚡ Select your time limit and begin the ultimate chess battle! ⚡</div>
+
+    <script>
+        // Chess pieces using Unicode symbols
+        const pieces = {
+            'white': {
+                'king': '♔', 'queen': '♕', 'rook': '♖', 
+                'bishop': '♗', 'knight': '♘', 'pawn': '♙'
+            },
+            'black': {
+                'king': '♚', 'queen': '♛', 'rook': '♜', 
+                'bishop': '♝', 'knight': '♞', 'pawn': '♟'
+            }
+        };
+
+        // Game state
+        let gameState = {
+            board: [],
+            currentPlayer: 'white',
+            selectedSquare: null,
+            gameStarted: false,
+            gameOver: false,
+            player1Time: 300,
+            player2Time: 300,
+            timer: null
+        };
+
+        // Initialize the chess board
+        function initializeBoard() {
+            const board = Array(8).fill().map(() => Array(8).fill(null));
+            
+            // Place pieces
+            const initialSetup = [
+                ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'],
+                ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
+            ];
+
+            // Black pieces
+            for (let col = 0; col < 8; col++) {
+                board[0][col] = { color: 'black', piece: initialSetup[0][col] };
+                board[1][col] = { color: 'black', piece: initialSetup[1][col] };
+            }
+
+            // White pieces
+            for (let col = 0; col < 8; col++) {
+                board[7][col] = { color: 'white', piece: initialSetup[0][col] };
+                board[6][col] = { color: 'white', piece: initialSetup[1][col] };
+            }
+
+            return board;
+        }
+
+        // Render the chess board
+        function renderBoard() {
+            const boardElement = document.getElementById('chessBoard');
+            boardElement.innerHTML = '';
+
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const square = document.createElement('div');
+                    square.className = 'chess-square';
+                    square.dataset.row = row;
+                    square.dataset.col = col;
+
+                    const piece = gameState.board[row][col];
+                    if (piece) {
+                        const pieceElement = document.createElement('span');
+                        pieceElement.className = `piece ${piece.color}`;
+                        pieceElement.textContent = pieces[piece.color][piece.piece];
+                        square.appendChild(pieceElement);
+                    }
+
+                    square.addEventListener('click', () => handleSquareClick(row, col));
+                    boardElement.appendChild(square);
+                }
+            }
+        }
+
+        // Handle square clicks
+        function handleSquareClick(row, col) {
+            if (!gameState.gameStarted || gameState.gameOver) return;
+
+            const square = gameState.board[row][col];
+            const squareElement = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+            // Clear previous selections
+            document.querySelectorAll('.chess-square').forEach(sq => {
+                sq.classList.remove('selected', 'valid-move');
+            });
+
+            if (gameState.selectedSquare) {
+                const [selectedRow, selectedCol] = gameState.selectedSquare;
+                
+                if (row === selectedRow && col === selectedCol) {
+                    // Deselect
+                    gameState.selectedSquare = null;
+                    return;
+                }
+
+                // Try to move piece
+                if (isValidMove(selectedRow, selectedCol, row, col)) {
+                    movePiece(selectedRow, selectedCol, row, col);
+                    gameState.selectedSquare = null;
+                    switchPlayer();
+                    return;
+                }
+            }
+
+            // Select piece if it belongs to current player
+            if (square && square.color === gameState.currentPlayer) {
+                gameState.selectedSquare = [row, col];
+                squareElement.classList.add('selected');
+                highlightValidMoves(row, col);
+            }
+        }
+
+        // Basic move validation (simplified)
+        function isValidMove(fromRow, fromCol, toRow, toCol) {
+            const piece = gameState.board[fromRow][fromCol];
+            const targetSquare = gameState.board[toRow][toCol];
+
+            // Can't capture own piece
+            if (targetSquare && targetSquare.color === piece.color) {
+                return false;
+            }
+
+            // Basic piece movement rules (simplified)
+            const rowDiff = Math.abs(toRow - fromRow);
+            const colDiff = Math.abs(toCol - fromCol);
+
+            switch (piece.piece) {
+                case 'pawn':
+                    const direction = piece.color === 'white' ? -1 : 1;
+                    const startRow = piece.color === 'white' ? 6 : 1;
+                    
+                    if (fromCol === toCol && !targetSquare) {
+                        return (toRow === fromRow + direction) || 
+                               (fromRow === startRow && toRow === fromRow + 2 * direction);
+                    }
+                    if (Math.abs(fromCol - toCol) === 1 && toRow === fromRow + direction && targetSquare) {
+                        return true;
+                    }
+                    return false;
+
+                case 'rook':
+                    return (fromRow === toRow || fromCol === toCol) && isPathClear(fromRow, fromCol, toRow, toCol);
+
+                case 'bishop':
+                    return rowDiff === colDiff && isPathClear(fromRow, fromCol, toRow, toCol);
+
+                case 'queen':
+                    return ((fromRow === toRow || fromCol === toCol) || rowDiff === colDiff) && 
+                           isPathClear(fromRow, fromCol, toRow, toCol);
+
+                case 'king':
+                    return rowDiff <= 1 && colDiff <= 1;
+
+                case 'knight':
+                    return (rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2);
+
+                default:
+                    return false;
+            }
+        }
+
+        // Check if path is clear for sliding pieces
+        function isPathClear(fromRow, fromCol, toRow, toCol) {
+            const rowStep = toRow > fromRow ? 1 : toRow < fromRow ? -1 : 0;
+            const colStep = toCol > fromCol ? 1 : toCol < fromCol ? -1 : 0;
+
+            let currentRow = fromRow + rowStep;
+            let currentCol = fromCol + colStep;
+
+            while (currentRow !== toRow || currentCol !== toCol) {
+                if (gameState.board[currentRow][currentCol]) {
+                    return false;
+                }
+                currentRow += rowStep;
+                currentCol += colStep;
+            }
+
+            return true;
+        }
+
+        // Highlight valid moves
+        function highlightValidMoves(row, col) {
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (isValidMove(row, col, r, c)) {
+                        const squareElement = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                        squareElement.classList.add('valid-move');
+                    }
+                }
+            }
+        }
+
+        // Move piece
+        function movePiece(fromRow, fromCol, toRow, toCol) {
+            const piece = gameState.board[fromRow][fromCol];
+            const capturedPiece = gameState.board[toRow][toCol];
+            
+            gameState.board[toRow][toCol] = piece;
+            gameState.board[fromRow][fromCol] = null;
+
+            // Check for game end conditions
+            if (capturedPiece && capturedPiece.piece === 'king') {
+                endGame(`🎉 ${gameState.currentPlayer === 'white' ? 'White' : 'Black'} wins by checkmate! 🎉`);
+            }
+
+            renderBoard();
+        }
+
+        // Switch players
+        function switchPlayer() {
+            gameState.currentPlayer = gameState.currentPlayer === 'white' ? 'black' : 'white';
+            updatePlayerDisplay();
+            updateGameStatus();
+        }
+
+        // Update player display
+        function updatePlayerDisplay() {
+            const player1Info = document.getElementById('player1Info');
+            const player2Info = document.getElementById('player2Info');
+
+            player1Info.classList.toggle('active', gameState.currentPlayer === 'white');
+            player2Info.classList.toggle('active', gameState.currentPlayer === 'black');
+        }
+
+        // Update game status
+        function updateGameStatus() {
+            if (!gameState.gameOver && gameState.gameStarted) {
+                const currentPlayerName = gameState.currentPlayer === 'white' ? 'White' : 'Black';
+                document.getElementById('gameStatus').textContent = `⚡ ${currentPlayerName}'s turn - Make your move! ⚡`;
+            }
+        }
+
+        // Timer functions
+        function startTimer() {
+            gameState.timer = setInterval(() => {
+                if (gameState.currentPlayer === 'white') {
+                    gameState.player1Time--;
+                    if (gameState.player1Time <= 0) {
+                        endGame('⏰ Black wins by timeout! ⏰');
+                        return;
+                    }
+                } else {
+                    gameState.player2Time--;
+                    if (gameState.player2Time <= 0) {
+                        endGame('⏰ White wins by timeout! ⏰');
+                        return;
+                    }
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            document.getElementById('player1Timer').textContent = formatTime(gameState.player1Time);
+            document.getElementById('player2Timer').textContent = formatTime(gameState.player2Time);
+        }
+
+        // Start game
+        function startGame() {
+            const timeLimit = parseInt(document.getElementById('timeLimit').value);
+            
+            gameState = {
+                board: initializeBoard(),
+                currentPlayer: 'white',
+                selectedSquare: null,
+                gameStarted: true,
+                gameOver: false,
+                player1Time: timeLimit,
+                player2Time: timeLimit,
+                timer: null
+            };
+
+            renderBoard();
+            updatePlayerDisplay();
+            updateTimerDisplay();
+            startTimer();
+            updateGameStatus();
+            
+            document.querySelector('.start-btn').textContent = '🔄 Restart Battle';
+        }
+
+        // End game
+        function endGame(message) {
+            gameState.gameOver = true;
+            gameState.gameStarted = false;
+            clearInterval(gameState.timer);
+            
+            const statusElement = document.getElementById('gameStatus');
+            statusElement.textContent = message;
+            statusElement.classList.add('game-over');
+            
+            document.querySelectorAll('.player-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+        }
+
+        // Initialize the game
+        gameState.board = initializeBoard();
+        renderBoard();
+        updateTimerDisplay();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966c4e40b37817ab',t:'MTc1Mzc4ODg1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
