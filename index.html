@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -89,10 +89,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            background: linear-gradient(135deg, rgba(46, 213, 115, 0.15), rgba(0, 123, 255, 0.15));
             padding: 12px 20px;
             border-radius: 20px;
-            border: 2px solid transparent;
+            border: 2px solid rgba(46, 213, 115, 0.3);
             background-clip: padding-box;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
@@ -116,18 +116,19 @@
 
         .control-group:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            border-color: #4ecdc4;
+            box-shadow: 0 10px 25px rgba(46, 213, 115, 0.3);
+            border-color: #2ed573;
         }
 
         .control-group label {
             font-weight: 700;
-            color: #2c3e50;
+            color: #ffffff;
             font-size: 0.95rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .control-group select, .start-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #2ed573, #17a2b8);
             color: white;
             border: none;
             padding: 8px 15px;
@@ -135,7 +136,112 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+        }
+
+        /* Enhanced dropdown styling */
+        .control-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 35px;
+            min-height: 40px;
+        }
+
+        .control-group select option {
+            background: linear-gradient(135deg, #2ed573, #17a2b8);
+            color: white !important;
+            padding: 12px 15px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            min-height: 45px;
+            line-height: 1.4;
+            display: block;
+        }
+
+        .control-group select option:hover {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d) !important;
+            color: white !important;
+            transform: scale(1.02);
+        }
+
+        .control-group select option:checked,
+        .control-group select option:selected {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
+            color: white !important;
+            font-weight: 700;
+        }
+
+        /* Enhanced visibility for all browsers */
+        .control-group select:focus option,
+        .control-group select:active option {
+            background: linear-gradient(135deg, #2ed573, #17a2b8) !important;
+            color: white !important;
+            padding: 12px 15px;
+            font-weight: 600;
+            min-height: 45px;
+        }
+
+        .control-group select:focus option:hover,
+        .control-group select:active option:hover {
+            background: linear-gradient(135deg, #20bf6b, #0fb9b1) !important;
+            color: white !important;
+        }
+
+        .control-group select:focus option:checked,
+        .control-group select:active option:checked {
+            background: linear-gradient(135deg, #ff6348, #ff4757) !important;
+            color: white !important;
+            font-weight: 700;
+        }
+
+        /* Firefox specific dropdown styling */
+        @-moz-document url-prefix() {
+            .control-group select option {
+                background-color: #2ed573 !important;
+                color: white !important;
+                padding: 12px 15px;
+                font-weight: 600;
+                min-height: 45px;
+            }
+            
+            .control-group select option:hover {
+                background-color: #20bf6b !important;
+                color: white !important;
+            }
+
+            .control-group select option:checked {
+                background-color: #ff6348 !important;
+                color: white !important;
+                font-weight: 700;
+            }
+        }
+
+        /* Chrome/Safari/Edge specific styling */
+        @supports (-webkit-appearance: none) {
+            .control-group select option {
+                background: #2ed573 !important;
+                color: white !important;
+                padding: 12px 15px;
+                font-weight: 600;
+                min-height: 45px;
+            }
+            
+            .control-group select option:hover {
+                background: #20bf6b !important;
+                color: white !important;
+            }
+
+            .control-group select option:checked {
+                background: #ff6348 !important;
+                color: white !important;
+                font-weight: 700;
+            }
         }
 
         .start-btn {
@@ -149,7 +255,7 @@
 
         .start-btn:hover, .control-group select:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(46, 213, 115, 0.5);
         }
 
         .game-container {
@@ -744,6 +850,333 @@
             box-shadow: none;
         }
 
+        /* Player Statistics */
+        .player-stats {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .stat-label {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hint Button */
+        .hint-btn {
+            background: linear-gradient(135deg, #feca57, #ff9ff3);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(254, 202, 87, 0.3);
+            margin-left: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hint-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .hint-btn:hover::before {
+            left: 100%;
+        }
+
+        .hint-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(254, 202, 87, 0.5);
+        }
+
+        /* AI Analysis */
+        .ai-analysis {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-analysis h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .analysis-bar {
+            background: linear-gradient(90deg, #ff6b6b 0%, #feca57 50%, #4ecdc4 100%);
+            height: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .analysis-fill {
+            background: rgba(255, 255, 255, 0.3);
+            height: 100%;
+            width: 50%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .analysis-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .best-move {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* Achievement Notification */
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            right: -400px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            z-index: 1001;
+            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid #fff;
+            max-width: 350px;
+        }
+
+        .achievement-notification.show {
+            right: 20px;
+            animation: achievementBounce 0.6s ease-out;
+        }
+
+        @keyframes achievementBounce {
+            0% { transform: scale(0.3) rotate(-10deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .achievement-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            animation: achievementGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes achievementGlow {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        .achievement-text {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .achievement-description {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Puzzle Panel */
+        .puzzle-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .puzzle-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-header h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .puzzle-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .puzzle-objective {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(78, 205, 196, 0.1));
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .puzzle-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .puzzle-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .puzzle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Board Themes */
+        .chess-board.neon {
+            background: 
+                linear-gradient(135deg, #0f0f23, #1a1a2e) padding-box,
+                linear-gradient(45deg, #00ff88, #00ccff, #ff00ff, #ffff00) border-box;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.8),
+                inset 0 0 30px rgba(0, 255, 136, 0.2),
+                0 0 60px rgba(0, 255, 136, 0.4);
+        }
+
+        .chess-board.neon .chess-square.light {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .chess-board.neon .chess-square.dark {
+            background: linear-gradient(135deg, #0f0f23, #0a0a1a);
+            box-shadow: inset 0 0 20px rgba(0, 204, 255, 0.1);
+        }
+
+        .chess-board.wood {
+            background: 
+                linear-gradient(135deg, #8b4513, #a0522d) padding-box,
+                linear-gradient(45deg, #daa520, #cd853f, #8b4513, #654321) border-box;
+        }
+
+        .chess-board.wood .chess-square.light {
+            background: linear-gradient(135deg, #deb887, #f5deb3, #d2b48c);
+        }
+
+        .chess-board.wood .chess-square.dark {
+            background: linear-gradient(135deg, #8b4513, #a0522d, #654321);
+        }
+
+        .chess-board.marble {
+            background: 
+                linear-gradient(135deg, #f8f8ff, #e6e6fa) padding-box,
+                linear-gradient(45deg, #dda0dd, #d8bfd8, #dda0dd, #e6e6fa) border-box;
+        }
+
+        .chess-board.marble .chess-square.light {
+            background: linear-gradient(135deg, #f8f8ff, #f0f8ff, #e6e6fa);
+        }
+
+        .chess-board.marble .chess-square.dark {
+            background: linear-gradient(135deg, #dda0dd, #d8bfd8, #c8a2c8);
+        }
+
+        .chess-board.space {
+            background: 
+                linear-gradient(135deg, #0c0c0c, #1a1a1a) padding-box,
+                linear-gradient(45deg, #4b0082, #8a2be2, #9400d3, #4169e1) border-box;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.9),
+                inset 0 0 30px rgba(75, 0, 130, 0.3),
+                0 0 60px rgba(138, 43, 226, 0.4);
+        }
+
+        .chess-board.space .chess-square.light {
+            background: linear-gradient(135deg, #2f2f2f, #404040);
+            box-shadow: inset 0 0 15px rgba(138, 43, 226, 0.1);
+        }
+
+        .chess-board.space .chess-square.dark {
+            background: linear-gradient(135deg, #0c0c0c, #1a1a1a);
+            box-shadow: inset 0 0 15px rgba(75, 0, 130, 0.2);
+        }
+
+        .chess-board.ocean {
+            background: 
+                linear-gradient(135deg, #006994, #0077be) padding-box,
+                linear-gradient(45deg, #00ced1, #20b2aa, #4682b4, #5f9ea0) border-box;
+        }
+
+        .chess-board.ocean .chess-square.light {
+            background: linear-gradient(135deg, #87ceeb, #b0e0e6, #add8e6);
+        }
+
+        .chess-board.ocean .chess-square.dark {
+            background: linear-gradient(135deg, #4682b4, #5f9ea0, #708090);
+        }
+
         /* Victory Celebration Popup */
         .victory-popup {
             position: fixed;
@@ -913,6 +1346,12 @@
                 transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
+        }
+
+        @keyframes achievementFlash {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+            50% { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #feca57 100%); }
+            100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
         }
 
         /* Enhanced Board Animations from Version 2 */
@@ -1141,7 +1580,7 @@
         <div class="controls">
             <div class="control-group">
                 <label for="gameMode">🎮 Game Mode:</label>
-                <select id="gameMode">
+                <select id="gameMode" onchange="updateGameModeDisplay()">
                     <option value="2player">2 Players</option>
                     <option value="computer">vs Computer</option>
                 </select>
@@ -1149,19 +1588,41 @@
             <div class="control-group" id="difficultyControl" style="display: none;">
                 <label for="difficulty">🧠 AI Difficulty:</label>
                 <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                    <option value="expert">Expert</option>
+                    <option value="beginner">Beginner (800)</option>
+                    <option value="easy">Easy (1200)</option>
+                    <option value="medium" selected>Medium (1600)</option>
+                    <option value="hard">Hard (2000)</option>
+                    <option value="expert">Expert (2400)</option>
+                    <option value="grandmaster">Grandmaster (2800)</option>
                 </select>
             </div>
             <div class="control-group">
                 <label for="timeLimit">⏱️ Time Control:</label>
                 <select id="timeLimit">
-                    <option value="60">1 Minute</option>
-                    <option value="300" selected>5 Minutes</option>
-                    <option value="600">10 Minutes</option>
+                    <option value="60">Bullet (1 min)</option>
+                    <option value="180">Blitz (3 min)</option>
+                    <option value="300" selected>Rapid (5 min)</option>
+                    <option value="600">Classical (10 min)</option>
+                    <option value="900">Long (15 min)</option>
                     <option value="unlimited">Unlimited</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="boardTheme">🎨 Board Theme:</label>
+                <select id="boardTheme" onchange="applyBoardTheme()">
+                    <option value="classic" selected>Classic</option>
+                    <option value="neon">Neon Glow</option>
+                    <option value="wood">Wooden</option>
+                    <option value="marble">Marble</option>
+                    <option value="space">Space</option>
+                    <option value="ocean">Ocean</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="soundEffects">🔊 Sound:</label>
+                <select id="soundEffects" onchange="updateSoundSetting()">
+                    <option value="on" selected>On</option>
+                    <option value="off">Off</option>
                 </select>
             </div>
             <button class="start-btn" onclick="startGame()">🚀 Start Battle</button>
@@ -1172,6 +1633,20 @@
         <div class="player-section" id="player1Info">
             <div class="player-name">Player 1 ♔</div>
             <div class="player-timer" id="player1Timer">5:00</div>
+            <div class="player-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Rating:</span>
+                    <span class="stat-value" id="player1Rating">1500</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wins:</span>
+                    <span class="stat-value" id="player1Wins">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Material:</span>
+                    <span class="stat-value" id="player1Material">39</span>
+                </div>
+            </div>
             <div class="captured-pieces">
                 <h4>Captured Pieces:</h4>
                 <div class="captured-list" id="player1Captured"></div>
@@ -1182,6 +1657,9 @@
                 <div class="undo-controls">
                     <button class="undo-btn" id="undoBtn" onclick="undoLastMove()">
                         ⏪ Undo Move
+                    </button>
+                    <button class="hint-btn" id="hintBtn" onclick="showHint()">
+                        💡 Hint
                     </button>
                 </div>
             </div>
@@ -1197,6 +1675,20 @@
         <div class="player-section" id="player2Info">
             <div class="player-name">Player 2 ♛</div>
             <div class="player-timer" id="player2Timer">5:00</div>
+            <div class="player-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Rating:</span>
+                    <span class="stat-value" id="player2Rating">1500</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wins:</span>
+                    <span class="stat-value" id="player2Wins">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Material:</span>
+                    <span class="stat-value" id="player2Material">39</span>
+                </div>
+            </div>
             <div class="captured-pieces">
                 <h4>Captured Pieces:</h4>
                 <div class="captured-list" id="player2Captured"></div>
@@ -1204,10 +1696,31 @@
             <div class="thinking-indicator" id="thinkingIndicator">
                 🤖 AI is calculating the perfect move...
             </div>
+            <div class="ai-analysis" id="aiAnalysis" style="display: none;">
+                <h4>AI Analysis:</h4>
+                <div class="analysis-bar">
+                    <div class="analysis-fill" id="analysisFill"></div>
+                    <span class="analysis-text" id="analysisText">Equal</span>
+                </div>
+                <div class="best-move" id="bestMove">Best: e2-e4</div>
+            </div>
         </div>
     </div>
 
     <div class="game-status" id="gameStatus">🎯 Configure your game settings and click "Start Battle" to begin the ultimate chess experience! 🎯</div>
+
+    <!-- Achievement Notification -->
+    <div class="achievement-notification" id="achievementNotification">
+        <div class="achievement-content">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-text">
+                <div class="achievement-title">Achievement Unlocked!</div>
+                <div class="achievement-description">First Victory</div>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Victory Celebration Popup -->
     <div class="victory-popup" id="victoryPopup">
@@ -1270,8 +1783,29 @@
                 black: { kingside: false, queenside: false }
             },
             enPassantTarget: null,
-            isInCheck: { white: false, black: false }
+            isInCheck: { white: false, black: false },
+            // New advanced features
+            playerStats: {
+                player1: { rating: 1500, wins: 0, losses: 0, draws: 0 },
+                player2: { rating: 1500, wins: 0, losses: 0, draws: 0 }
+            },
+            achievements: [],
+            boardTheme: 'classic',
+            soundEnabled: true,
+            hintUsed: false,
+            analysisMode: false
         };
+
+
+
+        // Achievement system
+        const achievements = [
+            { id: 'first_win', name: 'First Victory', description: 'Win your first game', icon: '🏆' },
+            { id: 'speed_demon', name: 'Speed Demon', description: 'Win a bullet game', icon: '⚡' },
+            { id: 'tactician', name: 'Tactician', description: 'Win by checkmate in under 20 moves', icon: '🎯' },
+            { id: 'endgame_expert', name: 'Endgame Expert', description: 'Win with only king and queen', icon: '👑' },
+            { id: 'comeback_king', name: 'Comeback King', description: 'Win after being down material', icon: '🔄' }
+        ];
 
         // Initialize the chess board
         function initializeBoard() {
@@ -1900,16 +2434,25 @@
             
             updatePlayerDisplay();
             updateGameStatus();
+            updateMaterialCount();
+            updateAIAnalysis();
+
+            // Reset hint for new turn
+            gameState.hintUsed = false;
+            document.getElementById('hintBtn').disabled = false;
+            document.getElementById('hintBtn').textContent = '💡 Hint';
+
+
 
             // Check for game end conditions
             if (isCheckmate(gameState.currentPlayer)) {
-                const winner = gameState.currentPlayer === 'white' ? 'Black' : 'White';
-                endGame(`🎉 CHECKMATE! ${winner} wins! 🎉`, 'checkmate');
+                const winner = gameState.currentPlayer === 'white' ? 'black' : 'white';
+                endGameAdvanced(`🎉 CHECKMATE! ${winner === 'white' ? 'White' : 'Black'} wins! 🎉`, 'checkmate', winner);
                 return;
             }
             
             if (isStalemate(gameState.currentPlayer)) {
-                endGame('🤝 STALEMATE! It\'s a draw! 🤝', 'stalemate');
+                endGameAdvanced('🤝 STALEMATE! It\'s a draw! 🤝', 'stalemate', 'draw');
                 return;
             }
 
@@ -2058,20 +2601,13 @@
 
         // Calculate best AI move
         function calculateAIMove() {
-            const difficultyDepth = {
-                'easy': 1,
-                'medium': 2,
-                'hard': 3,
-                'expert': 4
-            };
-
-            const depth = difficultyDepth[gameState.difficulty];
+            const difficultySettings = getAIDifficulty();
             const moves = getAllPossibleMoves('black');
             
             if (moves.length === 0) return null;
 
             // Add randomness for easier difficulties
-            if (gameState.difficulty === 'easy' && Math.random() < 0.4) {
+            if (Math.random() < difficultySettings.randomness) {
                 return moves[Math.floor(Math.random() * moves.length)];
             }
 
@@ -2088,7 +2624,7 @@
                 gameState.board[toRow][toCol] = gameState.board[fromRow][fromCol];
                 gameState.board[fromRow][fromCol] = null;
 
-                const moveValue = minimax(depth - 1, false);
+                const moveValue = minimax(difficultySettings.depth - 1, false);
                 
                 // Undo move
                 gameState.board[fromRow][fromCol] = gameState.board[toRow][toCol];
@@ -2379,8 +2915,321 @@
             }
         }
 
-        // Event listeners
-        document.getElementById('gameMode').addEventListener('change', updateGameModeDisplay);
+        // Advanced Features Functions
+
+        // Update material count
+        function updateMaterialCount() {
+            let whiteMaterial = 0, blackMaterial = 0;
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = gameState.board[row][col];
+                    if (piece) {
+                        const value = pieceValues[piece.piece];
+                        if (piece.color === 'white') {
+                            whiteMaterial += value;
+                        } else {
+                            blackMaterial += value;
+                        }
+                    }
+                }
+            }
+            
+            document.getElementById('player1Material').textContent = whiteMaterial;
+            document.getElementById('player2Material').textContent = blackMaterial;
+        }
+
+        // Update player statistics
+        function updatePlayerStats() {
+            const stats1 = gameState.playerStats.player1;
+            const stats2 = gameState.playerStats.player2;
+            
+            document.getElementById('player1Rating').textContent = stats1.rating;
+            document.getElementById('player1Wins').textContent = stats1.wins;
+            document.getElementById('player2Rating').textContent = stats2.rating;
+            document.getElementById('player2Wins').textContent = stats2.wins;
+        }
+
+        // Show achievement notification
+        function showAchievement(achievementId) {
+            const achievement = achievements.find(a => a.id === achievementId);
+            if (!achievement || gameState.achievements.includes(achievementId)) return;
+            
+            gameState.achievements.push(achievementId);
+            
+            const notification = document.getElementById('achievementNotification');
+            const icon = notification.querySelector('.achievement-icon');
+            const title = notification.querySelector('.achievement-title');
+            const description = notification.querySelector('.achievement-description');
+            
+            icon.textContent = achievement.icon;
+            title.textContent = achievement.name;
+            description.textContent = achievement.description;
+            
+            notification.classList.add('show');
+            
+            // Play achievement sound (visual feedback only)
+            if (gameState.soundEnabled) {
+                // Visual sound effect
+                document.body.style.animation = 'achievementFlash 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 300);
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Check for achievements
+        function checkAchievements(gameResult) {
+            if (gameResult === 'win') {
+                const totalWins = gameState.playerStats.player1.wins + gameState.playerStats.player2.wins;
+                if (totalWins === 1) {
+                    showAchievement('first_win');
+                }
+                
+                if (gameState.moveHistory.length <= 20) {
+                    showAchievement('tactician');
+                }
+                
+                const timeLimit = document.getElementById('timeLimit').value;
+                if (timeLimit === '60') {
+                    showAchievement('speed_demon');
+                }
+            }
+            
+            if (gameState.puzzlesSolved >= 10) {
+                showAchievement('puzzle_master');
+            }
+        }
+
+        // Apply board theme
+        function applyBoardTheme() {
+            const board = document.getElementById('chessBoard');
+            const theme = document.getElementById('boardTheme').value;
+            
+            // Remove all theme classes
+            board.classList.remove('classic', 'neon', 'wood', 'marble', 'space', 'ocean');
+            
+            // Add selected theme
+            if (theme !== 'classic') {
+                board.classList.add(theme);
+            }
+            
+            gameState.boardTheme = theme;
+        }
+
+        // Show hint
+        function showHint() {
+            if (gameState.gameOver || !gameState.gameStarted || gameState.hintUsed) return;
+            
+            const moves = getAllPossibleMoves(gameState.currentPlayer);
+            if (moves.length === 0) return;
+            
+            // Get best move for current player
+            let bestMove = null;
+            let bestValue = gameState.currentPlayer === 'white' ? -Infinity : Infinity;
+            
+            for (const move of moves) {
+                const [fromRow, fromCol] = move.from;
+                const [toRow, toCol] = move.to;
+                
+                // Make move
+                const capturedPiece = gameState.board[toRow][toCol];
+                const originalEnPassant = gameState.enPassantTarget;
+                gameState.board[toRow][toCol] = gameState.board[fromRow][fromCol];
+                gameState.board[fromRow][fromCol] = null;
+
+                const moveValue = minimax(2, gameState.currentPlayer === 'black');
+                
+                // Undo move
+                gameState.board[fromRow][fromCol] = gameState.board[toRow][toCol];
+                gameState.board[toRow][toCol] = capturedPiece;
+                gameState.enPassantTarget = originalEnPassant;
+
+                if ((gameState.currentPlayer === 'white' && moveValue > bestValue) ||
+                    (gameState.currentPlayer === 'black' && moveValue < bestValue)) {
+                    bestValue = moveValue;
+                    bestMove = move;
+                }
+            }
+            
+            if (bestMove) {
+                const [fromRow, fromCol] = bestMove.from;
+                const [toRow, toCol] = bestMove.to;
+                
+                // Highlight hint squares
+                const fromSquare = document.querySelector(`[data-row="${fromRow}"][data-col="${fromCol}"]`);
+                const toSquare = document.querySelector(`[data-row="${toRow}"][data-col="${toCol}"]`);
+                
+                fromSquare.style.boxShadow = '0 0 20px #ffd700, inset 0 0 20px rgba(255, 215, 0, 0.3)';
+                toSquare.style.boxShadow = '0 0 20px #ffd700, inset 0 0 20px rgba(255, 215, 0, 0.3)';
+                
+                setTimeout(() => {
+                    fromSquare.style.boxShadow = '';
+                    toSquare.style.boxShadow = '';
+                }, 3000);
+                
+                gameState.hintUsed = true;
+                document.getElementById('hintBtn').disabled = true;
+                document.getElementById('hintBtn').textContent = '💡 Used';
+            }
+        }
+
+        // Load puzzle
+        function loadPuzzle(puzzleId) {
+            const puzzle = chessPuzzles.find(p => p.id === puzzleId) || chessPuzzles[0];
+            gameState.currentPuzzle = puzzle;
+            
+            // Set puzzle info
+            document.getElementById('puzzleDifficulty').textContent = puzzle.difficulty;
+            document.getElementById('puzzleRating').textContent = puzzle.rating;
+            document.getElementById('puzzleObjective').textContent = puzzle.objective;
+            
+            // Reset game state for puzzle
+            gameState.board = initializeBoard();
+            gameState.currentPlayer = 'white';
+            gameState.gameStarted = true;
+            gameState.gameOver = false;
+            gameState.selectedSquare = null;
+            gameState.capturedPieces = { white: [], black: [] };
+            gameState.moveHistory = [];
+            gameState.gameStateHistory = [];
+            gameState.isInCheck = { white: false, black: false };
+            
+            // Clear any existing timer
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            
+            // Update all displays
+            clearHighlights();
+            renderBoard();
+            updatePlayerDisplay();
+            updateCapturedPieces();
+            updateMoveHistory();
+            updateUndoButton();
+            updateMaterialCount();
+            
+            // Update game status for puzzle mode
+            const statusElement = document.getElementById('gameStatus');
+            statusElement.textContent = `🧩 Puzzle ${puzzle.id}: ${puzzle.objective} 🧩`;
+            statusElement.className = 'game-status';
+            
+            // Update timer display for puzzle mode
+            document.getElementById('player1Timer').textContent = '∞';
+            document.getElementById('player2Timer').textContent = '∞';
+        }
+
+        // Next puzzle
+        function nextPuzzle() {
+            const currentId = gameState.currentPuzzle ? gameState.currentPuzzle.id : 0;
+            const nextId = (currentId % chessPuzzles.length) + 1;
+            loadPuzzle(nextId);
+        }
+
+        // Solve puzzle
+        function solvePuzzle() {
+            if (!gameState.currentPuzzle) return;
+            
+            const solution = gameState.currentPuzzle.solution;
+            const statusElement = document.getElementById('gameStatus');
+            statusElement.textContent = `💡 Solution: ${solution} - ${gameState.currentPuzzle.description}`;
+            statusElement.className = 'game-status';
+            
+            // Highlight the solution move if possible
+            showHint();
+        }
+
+        // Reset puzzle
+        function resetPuzzle() {
+            if (!gameState.currentPuzzle) return;
+            loadPuzzle(gameState.currentPuzzle.id);
+        }
+
+        // Update AI analysis
+        function updateAIAnalysis() {
+            if (gameState.gameMode !== 'computer' || !gameState.analysisMode) return;
+            
+            const evaluation = evaluateBoard();
+            const analysisBar = document.getElementById('analysisFill');
+            const analysisText = document.getElementById('analysisText');
+            const bestMoveElement = document.getElementById('bestMove');
+            
+            // Convert evaluation to percentage (50% = equal)
+            const percentage = Math.max(0, Math.min(100, 50 + (evaluation * 5)));
+            analysisBar.style.width = percentage + '%';
+            
+            if (evaluation > 2) {
+                analysisText.textContent = 'Black Winning';
+            } else if (evaluation > 0.5) {
+                analysisText.textContent = 'Black Better';
+            } else if (evaluation < -2) {
+                analysisText.textContent = 'White Winning';
+            } else if (evaluation < -0.5) {
+                analysisText.textContent = 'White Better';
+            } else {
+                analysisText.textContent = 'Equal';
+            }
+            
+            // Show best move
+            const bestMove = calculateAIMove();
+            if (bestMove) {
+                const [fromRow, fromCol] = bestMove.from;
+                const [toRow, toCol] = bestMove.to;
+                const fromSquare = String.fromCharCode(97 + fromCol) + (8 - fromRow);
+                const toSquare = String.fromCharCode(97 + toCol) + (8 - toRow);
+                bestMoveElement.textContent = `Best: ${fromSquare}-${toSquare}`;
+            }
+        }
+
+        // Enhanced difficulty settings
+        function getAIDifficulty() {
+            const difficultySettings = {
+                'beginner': { depth: 1, randomness: 0.6, rating: 800 },
+                'easy': { depth: 2, randomness: 0.4, rating: 1200 },
+                'medium': { depth: 3, randomness: 0.2, rating: 1600 },
+                'hard': { depth: 4, randomness: 0.1, rating: 2000 },
+                'expert': { depth: 5, randomness: 0.05, rating: 2400 },
+                'grandmaster': { depth: 6, randomness: 0, rating: 2800 }
+            };
+            
+            return difficultySettings[gameState.difficulty] || difficultySettings['medium'];
+        }
+
+
+
+        // Enhanced end game with statistics update
+        function endGameAdvanced(message, type, winner) {
+            endGame(message, type);
+            
+            // Update statistics
+            if (winner === 'white') {
+                gameState.playerStats.player1.wins++;
+                gameState.playerStats.player2.losses++;
+                checkAchievements('win');
+            } else if (winner === 'black') {
+                gameState.playerStats.player2.wins++;
+                gameState.playerStats.player1.losses++;
+                checkAchievements('win');
+            } else {
+                gameState.playerStats.player1.draws++;
+                gameState.playerStats.player2.draws++;
+            }
+            
+            updatePlayerStats();
+        }
+
+        // Update sound setting
+        function updateSoundSetting() {
+            const soundValue = document.getElementById('soundEffects').value;
+            gameState.soundEnabled = soundValue === 'on';
+        }
+
+        // Event listeners (removed since we're using inline handlers now)
 
         // Initialize the game
         gameState.board = initializeBoard();
@@ -2390,6 +3239,14 @@
         updateCapturedPieces();
         updateMoveHistory();
         updateUndoButton();
+        updatePlayerStats();
+        updateMaterialCount();
+        applyBoardTheme();
+        
+        // Ensure difficulty control is properly shown/hidden on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateGameModeDisplay();
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966cd480f7c09a83',t:'MTc1Mzc5NDM1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966d443d95f7937f',t:'MTc1Mzc5ODkyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
