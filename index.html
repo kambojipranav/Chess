@@ -164,12 +164,13 @@
 
         .player-section {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             backdrop-filter: blur(20px);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            min-width: 250px;
+            min-width: 220px;
+            max-width: 280px;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -203,47 +204,48 @@
         }
 
         .player-name {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #2c3e50;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
             position: relative;
             z-index: 2;
         }
 
         .player-timer {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
             z-index: 2;
         }
 
         .captured-pieces {
-            margin-top: 20px;
+            margin-top: 15px;
             position: relative;
             z-index: 2;
         }
 
         .captured-pieces h4 {
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .captured-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 3px;
         }
 
         .captured-piece {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             opacity: 0.7;
             animation: captureFloat 2s ease-in-out infinite;
         }
@@ -263,7 +265,7 @@
         .board-coordinates {
             display: flex;
             justify-content: space-between;
-            width: 640px;
+            width: 800px;
             margin-bottom: 10px;
             font-weight: bold;
             font-size: 16px;
@@ -660,10 +662,10 @@
 
         .move-history {
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
-            max-height: 200px;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 15px;
+            max-height: 150px;
             overflow-y: auto;
             position: relative;
             z-index: 2;
@@ -671,16 +673,17 @@
 
         .move-history h4 {
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .move-item {
-            padding: 5px 10px;
+            padding: 4px 8px;
             margin: 2px 0;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(78, 205, 196, 0.1));
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
         }
 
@@ -690,7 +693,7 @@
         }
 
         .undo-controls {
-            margin-top: 15px;
+            margin-top: 12px;
             text-align: center;
         }
 
@@ -698,11 +701,11 @@
             background: linear-gradient(135deg, #ff7675, #fd79a8);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
+            padding: 8px 16px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 4px 15px rgba(255, 118, 117, 0.3);
             position: relative;
@@ -915,8 +918,8 @@
         /* Enhanced Board Animations from Version 2 */
         .chess-board {
             display: grid;
-            grid-template-columns: repeat(8, 80px);
-            grid-template-rows: repeat(8, 80px);
+            grid-template-columns: repeat(8, 100px);
+            grid-template-rows: repeat(8, 100px);
             border: 8px solid transparent;
             border-radius: 20px;
             background: 
@@ -965,12 +968,12 @@
         }
 
         .chess-square {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             cursor: pointer;
             position: relative;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -2127,22 +2130,36 @@
             const timeLimit = document.getElementById('timeLimit').value;
             if (timeLimit === 'unlimited') return;
 
+            // Clear any existing timer
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+
             gameState.timer = setInterval(() => {
+                if (gameState.gameOver || !gameState.gameStarted) {
+                    clearInterval(gameState.timer);
+                    return;
+                }
+
                 if (gameState.currentPlayer === 'white') {
                     gameState.player1Time--;
                     if (gameState.player1Time <= 0) {
+                        gameState.player1Time = 0;
+                        clearInterval(gameState.timer);
                         endGame('⏰ Time\'s up! Black wins by timeout! ⏰', 'timeout');
                         return;
                     }
                 } else {
                     gameState.player2Time--;
                     if (gameState.player2Time <= 0) {
+                        gameState.player2Time = 0;
+                        clearInterval(gameState.timer);
                         endGame('⏰ Time\'s up! White wins by timeout! ⏰', 'timeout');
                         return;
                     }
                 }
                 updateTimerDisplay();
-            }, 1000);
+            }, 1000); // Update every second
         }
 
         function updateTimerDisplay() {
@@ -2168,6 +2185,11 @@
             const timeLimit = document.getElementById('timeLimit').value;
             const timeLimitSeconds = timeLimit === 'unlimited' ? Infinity : parseInt(timeLimit);
             
+            // Clear any existing timer first
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+
             // Reset game state
             gameState = {
                 board: initializeBoard(),
@@ -2311,7 +2333,12 @@
             gameState.gameOver = true;
             gameState.gameStarted = false;
             gameState.isComputerTurn = false;
-            clearInterval(gameState.timer);
+            
+            // Clear timer
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
             
             const statusElement = document.getElementById('gameStatus');
             statusElement.textContent = message;
@@ -2364,5 +2391,5 @@
         updateMoveHistory();
         updateUndoButton();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966c8f7731059a71',t:'MTc1Mzc5MTUyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966cd480f7c09a83',t:'MTc1Mzc5NDM1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
